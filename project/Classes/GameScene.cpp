@@ -358,9 +358,11 @@ void GameScene::spawnNextBlock()
 
     addChild(_activeBlock);
 
+    float posX = RandomHelper::random_real(0.0f, ColorMatch::DESIGN_WIDTH);
+    posX = clampf(posX, _activeBlock->getBounds().size.width * 0.5f, ColorMatch::DESIGN_WIDTH - _activeBlock->getBounds().size.width * 0.5f);
     _activeBlock->setPosition(
         Vec2(
-            ColorMatch::BLOCK_START_X,
+            posX,
             ColorMatch::BLOCK_START_Y
         )
     );
