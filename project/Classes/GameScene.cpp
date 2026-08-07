@@ -67,7 +67,7 @@ void GameScene::createBackground()
 {
     auto background =
         LayerColor::create(
-            Color4B(235, 235, 235, 255)
+            Color4B(0, 0, 0, 255)
         );
 
     addChild(background);
@@ -91,9 +91,9 @@ void GameScene::createPlayer()
 void GameScene::createHud()
 {
     _scoreLabel =
-        Label::createWithSystemFont(
+        Label::createWithTTF(
             "",
-            "Arial",
+            "fonts/arial.ttf",
             28
         );
 
@@ -109,9 +109,9 @@ void GameScene::createHud()
     addChild(_scoreLabel);
 
     _blocksLabel =
-        Label::createWithSystemFont(
+        Label::createWithTTF(
             "",
-            "Arial",
+            "fonts/arial.ttf",
             28
         );
 
@@ -132,9 +132,9 @@ void GameScene::createHud()
 void GameScene::createResultLabel()
 {
     _resultLabel =
-        Label::createWithSystemFont(
+        Label::createWithTTF(
             "",
-            "Arial",
+            "fonts/arial.ttf",
             42
         );
 
@@ -264,6 +264,26 @@ void GameScene::updateBlock(float delta)
         delta;
 
     _activeBlock->setPosition(position);
+    
+    if (_activeBlock->getBounds().getMaxY() <= 0.0f) {
+
+        ++_processedBlocks;
+
+        _activeBlock->removeFromParent();
+        _activeBlock = nullptr;
+
+        updateHud();
+
+        if (_processedBlocks >=
+            ColorMatch::TOTAL_BLOCKS)
+        {
+            finishGame();
+        }
+        else
+        {
+            spawnNextBlock();
+        }
+    }
 }
 
 Rect GameScene::getPlayerBounds() const
